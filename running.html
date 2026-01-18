@@ -72,7 +72,7 @@
     </div>
     <div style="display:flex;height: 30%; gap: 5px;background-color: white;border-radius: 10px;padding:20px">
       <div id="graph" style="width:30%; border: 1px solid black;background-color: white;">
-        <div class="graph" style="width: 100%; max-width: 600px; height: 300px; margin: 0 auto;"></div>
+        <div class="graph"></div>
         <canvas id="chart" width="450" height="225" style="display: block; height: 100%; width: 100%;justify-content: center; align-items: center;"></canvas>
       </div>
       <div id="movie" style="width:40%; place-items: center;">
@@ -110,6 +110,39 @@
         </button>
       </div>
 
+  </div>
+
+
+  <div style="display:none;">
+    <h2>問題文</h2>
+    <div id="poses"></div>
+    <div style="display:flex; gap: 15px;">
+      <span>左手首の位置:</span>
+      <div id="div_left_wrist"></div>
+      <div id="div_left_diff"></div>
+    </div>
+    <div style="display:flex; gap: 15px;">
+      <span>右手首の位置:</span>
+      <div id="div_right_wrist"></div>
+      <div id="div_right_diff"></div>
+    </div>
+    <span id="current_count"></span>
+    <span id="current_status">止まってる</span>
+    <textarea id="question" rows="4" cols="40">    走りながらでも解ける問題を読み上げます。
+    </textarea>
+
+    <h3>読み上げ速度</h3>
+    <input type="range" id="rate" min="0.5" max="2" step="0.1" value="1">
+
+    <h3>声の種類</h3>
+    <select id="voiceSelect"><option value="0">Microsoft Ayumi - Japanese (Japan) (ja-JP)</option><option value="1">Microsoft Haruka - Japanese (Japan) (ja-JP)</option><option value="2">Microsoft Ichiro - Japanese (Japan) (ja-JP)</option><option value="3">Microsoft Sayaka - Japanese (Japan) (ja-JP)</option><option value="4">Microsoft Aria Online (Natural) - English (United States) (en-US)</option><option value="5">Microsoft Guy Online (Natural) - English (United States) (en-US)</option><option value="6">Microsoft Xiaoxiao Online (Natural) - Chinese (Mainland) (zh-CN)</option><option value="7">Microsoft Yunyang Online (Natural) - Chinese (Mainland) (zh-CN)</option><option value="8">Microsoft HanHan Online - Chinese (Taiwan) (zh-TW)</option><option value="9">Microsoft Tracy Online - Chinese (Hong Kong) (zh-HK)</option><option value="10">Microsoft Nanami Online (Natural) - Japanese (Japan) (ja-JP)</option><option value="11">Microsoft Libby Online (Natural) - English (United Kingdom) (en-GB)</option><option value="12">Microsoft Francisca Online (Natural) - Portuguese (Brazil) (pt-BR)</option><option value="13">Microsoft Dalia Online (Natural) - Spanish (Mexico) (es-MX)</option><option value="14">Microsoft Priya Online - English (India) (en-IN)</option><option value="15">Microsoft Heather Online - English (Canada) (en-CA)</option><option value="16">Microsoft Sylvie Online (Natural) - French (Canada) (fr-CA)</option><option value="17">Microsoft Denise Online (Natural) - French (France) (fr-FR)</option><option value="18">Microsoft Katja Online (Natural) - German (Germany) (de-DE)</option><option value="19">Microsoft Ekaterina Online - Russian (Russia) (ru-RU)</option><option value="20">Microsoft Hayley Online - English (Australia) (en-AU)</option><option value="21">Microsoft Elsa Online (Natural) - Italian (Italy) (it-IT)</option><option value="22">Microsoft SunHi Online (Natural) - Korean (Korea) (ko-KR)</option><option value="23">Microsoft Hanna Online - Dutch (Netherlands) (nl-NL)</option><option value="24">Microsoft Elvira Online (Natural) - Spanish (Spain) (es-ES)</option><option value="25">Microsoft Emel Online (Natural) - Turkish (Turkey) (tr-TR)</option><option value="26">Microsoft Paulina Online - Polish (Poland) (pl-PL)</option></select>
+
+    <div id="viewer">
+      <h4>心拍数</h4>
+      <canvas id="chart" width="480"></canvas>
+      <div class="graph"></div>
+      <span id="elapsed"></span>
+    </div>
   </div>
 
 
