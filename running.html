@@ -605,8 +605,12 @@
 
       const result = word.split("").map(ch => kanjiToDigit[ch] ?? ch).join("");
 
-      document.getElementById('number_result').innerText = result;
-      document.getElementById('fullVoice_result').innerText = pass;
+      if (result.length > 0) {
+        document.getElementById('number_result').innerText = result;
+      }
+      if (pass.length > 0) {    
+        document.getElementById('fullVoice_result').innerText = pass;
+      }
       
       if (result === String(c)) {
         playPingPong();
@@ -803,4 +807,5 @@
 
 
 </body></html>
+
 
