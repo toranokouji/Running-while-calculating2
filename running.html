@@ -471,8 +471,8 @@
           leftWristScore = lw.score;
           leftWristY = lw.y;
           let leftRect = document.getElementById('left_rect');
-          leftRect.style.display = (lw.y + 15 < videoObj.height) ? 'none' : 'block';
-          rightRect.style.display = (rw.y + 15 < videoObj.height) ? 'none' : 'block';
+          leftRect.style.display = (lw.y + 15 > videoObj.height) ? 'none' : 'block';
+          rightRect.style.display = (rw.y + 15 > videoObj.height) ? 'none' : 'block';
           
           /*左手首のy座標（高さ）*/
           leftRect.style.top = videoObj.top + lw.y + "px";
@@ -834,6 +834,7 @@
 
 
 </body></html>
+
 
 
 
