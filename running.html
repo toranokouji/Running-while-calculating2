@@ -438,7 +438,7 @@
 
       getChangeCount(keypoints);
       nowTime = performance.now();
-      console.log("changeCount = " + changeCount);
+      //console.log("changeCount = " + changeCount);
 
       /*if（現在の経過時間から計測を開始した時間が1秒以内（1000ミリ秒））*/
       if (nowTime - startTime > 1000) {
@@ -454,7 +454,7 @@
           }
           startTime = 0;
           changeCount = 0;
-        console.log("isRunning = " + isRunning);
+        //console.log("isRunning = " + isRunning);
       }
 
       return isRunning;
@@ -470,7 +470,7 @@
         const lwOk = lw && lw.score > detectLevel && (lw.y + 30) < videoObj.height;
         leftRect.style.display = !lw || (lw.y + 30 > videoObj.height) ? 'none' : 'block';          
         if (lwOk) {
-          console.log("### lw score = " + lw.score);
+          //console.log("### lw score = " + lw.score);
           document.getElementById('div_left_wrist').innerText = lw.y;
           document.getElementById('div_left_diff').innerText = Math.abs(leftWristY - lw.y);
           leftWristScore = lw.score;
@@ -486,7 +486,7 @@
         const rwOk = rw && rw.score > detectLevel && (rw.y + 30) < videoObj.height;
         rightRect.style.display = !rw || (rw.y + 30 > videoObj.height) ? 'none' : 'block';
         if (rwOk) {
-          console.log("### rw score = " + rw.score);
+          //console.log("### rw score = " + rw.score);
           document.getElementById('div_right_wrist').innerText = rw.y;
           document.getElementById('div_right_diff').innerText = Math.abs(rightWristY - rw.y);
           rightWristScore = rw.score;
@@ -504,7 +504,7 @@
         if (lwOk && rwOk) {
           if ((rightWristY > leftWristY && whichUp == 0) ||
             (rightWristY < leftWristY && whichUp == 1)) {
-            console.log("@@@ lw.score = " + lw.score + ", rw.score = " + rw.score);
+            //console.log("@@@ lw.score = " + lw.score + ", rw.score = " + rw.score);
             changeCount++;
             totalCount++;
           }
@@ -837,6 +837,7 @@
 
 
 </body></html>
+
 
 
 
