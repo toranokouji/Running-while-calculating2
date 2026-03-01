@@ -127,8 +127,8 @@
       <div id="movie" style="width:40%; place-items: center;">
         <div id="video_parent">
           <video id="video" style="position: relative; z-index:1;" autoplay="" playsinline=""></video>
-          <div id="left_rect" style="position: absolute; z-index: 10; width: 30px; height: 30px; border: 2px solid red; top: 809.925px; left: 426.338px;"></div>
-          <div id="right_rect" style="position: absolute; z-index: 10; width: 30px; height: 30px; border: 2px solid blue; top: 807.448px; left: 338.259px;"></div>
+          <div id="left_rect" style="display:none; position: absolute; z-index: 10; width: 30px; height: 30px; border: 2px solid red; top: 809.925px; left: 426.338px;"></div>
+          <div id="right_rect" style="display:none; position: absolute; z-index: 10; width: 30px; height: 30px; border: 2px solid blue; top: 807.448px; left: 338.259px;"></div>
         </div>
       </div>
       <div id="detail" style="
@@ -464,16 +464,15 @@
         let videoObj = document.getElementById('video_parent').getBoundingClientRect();
         /*左手首*/
         const lw = keypoints.find(p => p.name === 'left_wrist');
-        if (lw && lw.score > detectLevel) {
+        const lwOk = lw && lw.score > detectLevel && (lw.y + 15) < videoObj.height;
+        if (lwOk) {
           console.log("### lw score = " + lw.score);
           document.getElementById('div_left_wrist').innerText = lw.y;
           document.getElementById('div_left_diff').innerText = Math.abs(leftWristY - lw.y);
           leftWristScore = lw.score;
           leftWristY = lw.y;
           let leftRect = document.getElementById('left_rect');
-          leftRect.style.display = (lw.y + 15 > videoObj.height) ? 'none' : 'block';
-          rightRect.style.display = (rw.y + 15 > videoObj.height) ? 'none' : 'block';
-          
+          leftRect.style.display = (lw.y + 15 > videoObj.height) ? 'none' : 'block';          
           /*左手首のy座標（高さ）*/
           leftRect.style.top = videoObj.top + lw.y + "px";
           /*左手首のx座標（横）*/
@@ -482,13 +481,15 @@
 
         /*右手首*/
         const rw = keypoints.find(p => p.name === 'right_wrist');
-        if (rw && rw.score > detectLevel) {
+        const rwOk = rw && rw.score > detectLevel && (rw.y + 15) < videoObj.height;
+        if (rwOk) {
           console.log("### rw score = " + rw.score);
           document.getElementById('div_right_wrist').innerText = rw.y;
           document.getElementById('div_right_diff').innerText = Math.abs(rightWristY - rw.y);
           rightWristScore = rw.score;
           rightWristY = rw.y;
           let rightRect = document.getElementById('right_rect');
+          rightRect.style.display = (rw.y + 15 > videoObj.height) ? 'none' : 'block';
           /*右手首のy座標（高さ）*/
           rightRect.style.top = videoObj.top + rw.y + "px";
           /*右手首のx座標（横）*/
@@ -499,7 +500,7 @@
           whichup=1（右手が上）*/
 
         /*右手が上かつwhichup=0 または 左手が上かつwhichup=1の場合、1回とカウントする（左右が入れ替わる場合）*/
-        if (lw && lw.score > detectLevel && rw && rw.score > detectLevel) {
+        if (lwOk && rwOk) {
           if ((rightWristY > leftWristY && whichUp == 0) ||
             (rightWristY < leftWristY && whichUp == 1)) {
             console.log("@@@ lw.score = " + lw.score + ", rw.score = " + rw.score);
@@ -834,6 +835,7 @@
 
 
 </body></html>
+
 
 
 
