@@ -42,6 +42,7 @@
       margin: 0;
       font-weight: bold;
     ">計算ランニング</h2>
+    <button onclick="fetchGeminiQuestion();">テスト</button>
     <div style="display:flex;height: 12%;background-color: white;gap: 30px;border: 1px solid black;border-radius: 10px;">
       <div style="display: flex; gap: 10px; align-items: center;padding:20px;font-size: 20px;">
         <div>残り時間</div>
@@ -860,12 +861,41 @@
       chart.update();
     }
 
+    async function fetchGeminiQuestion() {
+      try {
+        const res = await fetch("https://nlkabje6na.execute-api.ap-southeast-2.amazonaws.com", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ questionType: "脳トレ" })
+        });
+    
+        const raw = await res.json();
+        const data = typeof raw.body === "string" ? JSON.parse(raw.body) : raw;
+    
+        if (!data.question) {
+          console.error("Lambdaレスポンス不正", data);
+          return;
+        }
+
+        console.log(data.question);
+        // store.currentQuiz = data;
+    
+        // questionDiv.innerText =
+        //   data.question + "\n" +
+        //   data.choices.map((c,i)=>`${i+1}. ${c}`).join(" ");
+    
+      } catch (e) {
+        console.error("Gemini取得失敗", e);
+      }
+    }
+    
     init();
   </script>
 
 
 
 </body></html>
+
 
 
 
