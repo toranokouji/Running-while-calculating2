@@ -248,12 +248,21 @@
     let isRunning = false;
     let detectLevel = 0.1;
 
+    //脳トレ用変数
+    let brainQuestionText = null;
+    let brainAnswerText = null;
+    let brainTarget = 0;
+    const brainMax = 5;
+
     async function init() {
       stQuestionType = stQuestionType == null ? "calc_plus" : stQuestionType;
       stDifficulty = stDifficulty == null ? "easy" : stDifficulty;
       stAge = stAge == 0 ? 20 : stAge;
       stMinutes = stMinutes == 0 ? 600000 : stMinutes;
-
+      
+      if (stQuestionType == "brain_training") {
+        fetchGeminiQuestion();
+      }      
       startListening();
       loadVoices();
       speechSynthesis.onvoiceschanged = loadVoices;
@@ -581,99 +590,13 @@
                 answer = (a * b);
                 break;
           }
+        } else if (stQuestionType == "brain_training") {
+          question = brainQuestionText;
+          answer = brainAnswerText;
         }
+      
         return [question, answer];
     }
-
-    // クイズ出題関数
-    async function generateQuestion(isFast = false) {
-      questionWait = true;
-      setTimeout(( ) => {
-        console.log(stQuestionType);
-        if(stQuestionType == "calc_plus"){
-          if (difficulty == "hard") {
-            quizflag = Math.random();
-            if(quizflag >= 0.8){
-              a = Math.floor(Math.random() * 90) + 10;
-              b = Math.floor(Math.random() * 90) + 10;
-              scoreFlag = 3;
-            }else if(quizflag >= 0.4){
-              a = Math.floor(Math.random() * 90) + 10;
-              b = Math.floor(Math.random() * 9) + 1;
-              scoreFlag = 2;
-            }else{
-              a = Math.floor(Math.random() * 9) + 1;
-              b = Math.floor(Math.random() * 9) + 1;
-              scoreFlag = 1;
-            }
-          }else if (difficulty == "normal") {
-            quizflag = Math.random() < 0.5;
-            if (quizflag) {
-              //1桁×1桁
-              a = Math.floor(Math.random() * 9) + 1;
-              b = Math.floor(Math.random() * 9) + 1;
-              scoreFlag = 1;
-            } else {
-              //2桁×1桁
-              a = Math.floor(Math.random() * 90) + 10;
-              b = Math.floor(Math.random() * 9) + 1;
-              scoreFlag = 2;
-            }
-            
-          }else if (difficulty == "easy") {
-            a = Math.floor(Math.random() * 9) + 1;
-            b = Math.floor(Math.random() * 9) + 1;
-            scoreFlag = 1;
-          }
-          c = a + b;
-          questionText = `${a} + ${b} =`;
-          questionDiv.innerText = questionText;
-          speak(questionText);
-        }
-        if(stQuestionType == "calc_multiplication"){
-          if (difficulty == "hard") {
-            quizflag = Math.random();
-            if(quizflag >= 0.8){
-              a = Math.floor(Math.random() * 90) + 10;
-              b = Math.floor(Math.random() * 90) + 10;
-              scoreFlag = 5;
-            }else if(quizflag >= 0.4){
-              a = Math.floor(Math.random() * 90) + 10;
-              b = Math.floor(Math.random() * 9) + 1;
-              scoreFlag = 3;
-            }else{
-              a = Math.floor(Math.random() * 9) + 1;
-              b = Math.floor(Math.random() * 9) + 1;
-              scoreFlag = 1;
-            }
-          }else if (difficulty == "normal") {
-            quizflag = Math.random() < 0.5;
-            if (quizflag) {
-              //1桁×1桁
-              a = Math.floor(Math.random() * 9) + 1;
-              b = Math.floor(Math.random() * 9) + 1;
-              scoreFlag = 1;
-            } else {
-              //2桁×1桁
-              a = Math.floor(Math.random() * 90) + 10;
-              b = Math.floor(Math.random() * 9) + 1;
-              scoreFlag = 3;
-            }
-            
-          }else if (difficulty == "easy") {
-            a = Math.floor(Math.random() * 9) + 1;
-            b = Math.floor(Math.random() * 9) + 1;
-            scoreFlag = 1;
-          }
-          c = a * b;
-          questionText = `${a} × ${b} =`;
-          questionDiv.innerText = questionText;
-          speak(questionText);
-        }
-        questionCount++;
-      },isFast ? 1 : 1000);
-    }
-
 
     // checkAnswer() を修正して、正解時に次の問題を出す
     async function checkAnswer(word,pass) {
@@ -737,23 +660,24 @@
     //正解・不正解音関数
     //ピンポン音出す
     function playPingPong() {
-      const ctx = new (window.AudioContext || window.webkitAudioContext)();
+      return;
+      // const ctx = new (window.AudioContext || window.webkitAudioContext)();
 
-      // ピン音（高め）
-      const pin = ctx.createOscillator();
-      pin.type = 'sine';
-      pin.frequency.setValueAtTime(880, ctx.currentTime); // 高音
-      pin.connect(ctx.destination);
-      pin.start();
-      pin.stop(ctx.currentTime + 0.2);
+      // // ピン音（高め）
+      // const pin = ctx.createOscillator();
+      // pin.type = 'sine';
+      // pin.frequency.setValueAtTime(880, ctx.currentTime); // 高音
+      // pin.connect(ctx.destination);
+      // pin.start();
+      // pin.stop(ctx.currentTime + 0.2);
 
-      // ポン音（低め）
-      const pong = ctx.createOscillator();
-      pong.type = 'sine';
-      pong.frequency.setValueAtTime(440, ctx.currentTime + 0.3); // 低音
-      pong.connect(ctx.destination);
-      pong.start(ctx.currentTime + 0.3);
-      pong.stop(ctx.currentTime + 0.5);
+      // // ポン音（低め）
+      // const pong = ctx.createOscillator();
+      // pong.type = 'sine';
+      // pong.frequency.setValueAtTime(440, ctx.currentTime + 0.3); // 低音
+      // pong.connect(ctx.destination);
+      // pong.start(ctx.currentTime + 0.3);
+      // pong.stop(ctx.currentTime + 0.5);
     }
 
     function playWrongSound() {
@@ -880,10 +804,11 @@
         console.log(data.question);
         // store.currentQuiz = data;
     
-        // questionDiv.innerText =
-        //   data.question + "\n" +
-        //   data.choices.map((c,i)=>`${i+1}. ${c}`).join(" ");
-    
+        brainQuestionText =
+           data.question + "\n" +
+           data.choices.map((c,i)=>`${i+1}. ${c}`).join(" ");
+        brainAnswerText = Number(data.correctIndex) + 1;
+        
       } catch (e) {
         console.error("Gemini取得失敗", e);
       }
@@ -895,6 +820,7 @@
 
 
 </body></html>
+
 
 
 
